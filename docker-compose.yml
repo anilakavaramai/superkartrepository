@@ -12,8 +12,6 @@ services:
       timeout: 3s
       retries: 12
       start_period: 10s
-    ports:
-      - "7860:7860"
 
   frontend:
     build:
@@ -24,4 +22,4 @@ services:
     environment:
       BACKEND_URL: http://backend:7860
     ports:
-      - "8501:8501"
+      - "8502:8501"

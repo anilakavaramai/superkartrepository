@@ -9,4 +9,4 @@ From the repository root, run:
 docker compose up --build
 ```
 
-Open the Streamlit app at http://localhost:8501. Compose starts the backend on the shared service network and waits for its health check before starting the frontend. To stop the services, press Ctrl+C and run `docker compose down`.
+Open the Streamlit app at http://localhost:8502. Compose starts the backend on the shared service network and waits for its health check before starting the frontend. To stop the services, press Ctrl+C and run `docker compose down`.
