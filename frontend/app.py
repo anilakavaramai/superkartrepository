@@ -41,18 +41,18 @@ product_data = {
 
 # Single Prediction
 if st.button("Predict", type='primary'):
-
-    response = requests.post(
-        f"{BACKEND_URL}/v1/predict",
-        json=product_data
-    )
-
-    if response.status_code == 200:
+    try:
+        response = requests.post(
+            f"{BACKEND_URL}/v1/predict",
+            json=product_data,
+            timeout=30,
+        )
+        response.raise_for_status()
         result = response.json()
         predicted_sales = result["Sales"]
         st.success(f"Predicted Product Store Sales Total: ₹{predicted_sales:.2f}")
-    else:
-        st.error("Unable to connect to the prediction API.")
+    except requests.exceptions.RequestException as error:
+        st.error(f"Prediction API is unavailable at {BACKEND_URL}: {error}")
 
 # Batch Prediction
 st.subheader("Batch Prediction")
@@ -65,13 +65,13 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
 
     if st.button("Predict for Batch", type='primary'):
-
-        response = requests.post(
-            f"{BACKEND_URL}/v1/predictbatch",
-            files={"file": uploaded_file}
-        )
-
-        if response.status_code == 200:
+        try:
+            response = requests.post(
+                f"{BACKEND_URL}/v1/predictbatch",
+                files={"file": uploaded_file},
+                timeout=30,
+            )
+            response.raise_for_status()
             results = response.json()
 
             st.success("Predictions completed successfully!")
@@ -93,6 +93,5 @@ if uploaded_file is not None:
             except Exception as e:
                 st.error(f"Unable to display results as a table: {e}")
                 st.json(results)
-
-        else:
-            st.error("Unable to connect to the prediction API.")
+        except requests.exceptions.RequestException as error:
+            st.error(f"Prediction API is unavailable at {BACKEND_URL}: {error}")
